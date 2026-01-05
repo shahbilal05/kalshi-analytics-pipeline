@@ -13,8 +13,8 @@ CREATE TABLE raw_markets (
     event_id VARCHAR,                  
     status VARCHAR,                        
     close_time TIMESTAMP,                   
-    raw_outcome NUMBER,                 
-    predicted_raw NUMBER,                      
+    raw_outcome NUMBER(5,2),                 
+    predicted_raw NUMBER(5,2),                      
     raw_json VARIANT,                        
     loaded_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
