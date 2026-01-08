@@ -1,0 +1,5 @@
+CREATE TABLE IF NOT EXISTS raw_events (
+    ingested_at TIMESTAMP_NTZ NOT NULL DEFAULT CURRENT_TIMESTAMP(),
+    batch_id VARCHAR(100) NOT NULL,
+    raw_json VARIANT NOT NULL
+);
