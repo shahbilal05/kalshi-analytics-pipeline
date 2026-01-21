@@ -40,7 +40,7 @@ markets_enriched AS (
             END
         ) AS category,
         
-        (markets.yes_bid + markets.yes_ask) / 200.0 AS predicted_prob,
+        markets.last_price / 100.0 AS predicted_prob,
         
         CASE
             WHEN markets.result = 'yes' THEN 1.0

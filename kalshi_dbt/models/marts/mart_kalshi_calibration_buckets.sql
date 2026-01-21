@@ -38,14 +38,8 @@ markets_with_category AS (
             END
         ) AS category,
         
-        CASE 
-            WHEN markets.yes_bid IS NOT NULL 
-             AND markets.yes_ask IS NOT NULL
-             AND markets.yes_bid > 0
-             AND markets.yes_ask > 0
-            THEN (markets.yes_bid + markets.yes_ask) / 200.0
-            ELSE NULL
-        END AS predicted_prob,
+        
+        markets.last_price / 100.0 AS predicted_prob,
         
         CASE
             WHEN markets.result = 'yes' THEN 1
@@ -80,7 +74,7 @@ with_buckets AS (
         END AS probability_bucket
         
     FROM markets_with_category
-    WHERE predicted_prob IS NOT NULL
+    WHERE predicted_prob IS NOT NULL  
       AND actual_outcome IS NOT NULL
       AND category IS NOT NULL
 ),

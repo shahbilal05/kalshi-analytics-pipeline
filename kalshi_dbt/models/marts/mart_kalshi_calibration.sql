@@ -41,8 +41,7 @@ markets_with_category AS (
             END
         ) AS category,
         
-        -- calculate predicted probability from bid/ask midpoint
-        (markets.yes_bid + markets.yes_ask) / 200.0 AS predicted_prob,
+        markets.last_price / 100.0 AS predicted_prob,
         
         -- convert result to numeric
         CASE
