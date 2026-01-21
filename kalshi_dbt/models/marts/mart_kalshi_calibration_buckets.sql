@@ -38,7 +38,7 @@ markets_with_category AS (
             END
         ) AS category,
         
-        (CASE 
+        CASE 
             WHEN markets.yes_bid IS NOT NULL 
              AND markets.yes_ask IS NOT NULL
              AND markets.yes_bid > 0
