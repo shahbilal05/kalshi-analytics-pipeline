@@ -1,0 +1,72 @@
+version: 2
+
+models:
+  - name: stg_kalshi_events
+    description: "Cleaned and typed Kalshi events"
+    columns:
+      - name: event_ticker
+        description: "Unique event identifier"
+        tests:
+          - unique
+          - not_null
+      
+      - name: series_ticker
+        description: "Series identifier for related events"
+        tests:
+          - not_null
+      
+      - name: category
+        description: "Event category (Politics, Sports, Economics, etc.)"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['Politics', 'Sports', 'Culture', 'Crypto', 'Climate', 'Economics',
+                'Mentions', 'Companies', 'Financials', 'Tech & Science', 'Other']
+              quote: true
+              severity: warn  
+      
+      - name: title
+        description: "Event title"
+        tests:
+          - not_null
+
+  - name: stg_kalshi_markets
+    description: "Cleaned and typed Kalshi markets"
+    columns:
+      - name: market_ticker
+        description: "Unique market identifier"
+        tests:
+          - unique
+          - not_null
+      
+      - name: event_ticker
+        description: "Associated event ticker"
+        tests:
+          - not_null
+          - relationships:
+              to: ref('stg_kalshi_events')
+              field: event_ticker
+              severity: warn  
+      
+      - name: status
+        description: "Market status"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['open', 'closed', 'settled', 'determined', 'finalized']
+              quote: true
+      
+      - name: result
+        description: "Market result (yes/no)"
+        tests:
+          - accepted_values:
+              values: ['yes', 'no', null]
+              quote: true
+      
+      - name: close_time
+        description: "Market close timestamp"
+        tests:
+          - not_null
+      
+      - name: last_price
+        description: "Last traded price; not_null test intentionally omitted because some markets may never have traded" 

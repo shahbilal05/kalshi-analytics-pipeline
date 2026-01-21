@@ -1,3 +1,5 @@
+from cryptography.hazmat.backends import default_backend
+from cryptography.hazmat.primitives import serialization
 import os
 from dotenv import load_dotenv
 from extract import fetch_events_since, fetch_markets_since
@@ -9,16 +11,34 @@ from datetime import datetime
 load_dotenv()
 
 def connect_to_snowflake():
+    import os
+    from cryptography.hazmat.backends import default_backend
+    from cryptography.hazmat.primitives import serialization
+    
+    # read private key
+    with open(os.path.expanduser("~/.ssh/snowflake_rsa_key.pem"), "rb") as key_file:
+        p_key = serialization.load_pem_private_key(
+            key_file.read(),
+            password=None,
+            backend=default_backend()
+        )
+    
+    pkb = p_key.private_bytes(
+        encoding=serialization.Encoding.DER,
+        format=serialization.PrivateFormat.PKCS8,
+        encryption_algorithm=serialization.NoEncryption()
+    )
+    
     return snowflake.connector.connect(
         user=os.getenv('SNOWFLAKE_USER'),
-        password=os.getenv('SNOWFLAKE_PASSWORD'),
         account=os.getenv('SNOWFLAKE_ACCOUNT'),
+        private_key=pkb,
         database='KALSHI_DB',
         schema='RAW',
         warehouse="COMPUTE_WH",
+        role="ACCOUNTADMIN",
         autocommit=False
     )
-
 
 def fetch_last_processed_timestamp(kalshi_pipeline):
     # returns last processed timestamp from metadata table

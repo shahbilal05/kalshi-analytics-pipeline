@@ -1,0 +1,27 @@
+version: 2
+
+sources:
+  - name: raw
+    description: "Raw data from Kalshi API"
+    database: KALSHI_DB
+    schema: RAW
+    tables:
+      - name: raw_events
+        description: "Raw event data from Kalshi"
+        columns:
+          - name: ingested_at
+            description: "Timestamp when record was ingested"
+          - name: batch_id
+            description: "Batch identifier for pipeline run"
+          - name: raw_json
+            description: "Raw JSON response from API"
+      
+      - name: raw_markets
+        description: "Raw market data from Kalshi"
+        columns:
+          - name: ingested_at
+            description: "Timestamp when record was ingested"
+          - name: batch_id
+            description: "Batch identifier for pipeline run"
+          - name: raw_json
+            description: "Raw JSON response from API"
