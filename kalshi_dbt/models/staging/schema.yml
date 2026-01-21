@@ -62,6 +62,7 @@ models:
           - accepted_values:
               values: ['yes', 'no', null]
               quote: true
+              severity: warn
       
       - name: close_time
         description: "Market close timestamp"
