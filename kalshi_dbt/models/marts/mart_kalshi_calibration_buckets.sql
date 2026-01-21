@@ -38,7 +38,14 @@ markets_with_category AS (
             END
         ) AS category,
         
-        (markets.yes_bid + markets.yes_ask) / 200.0 AS predicted_prob,
+        (CASE 
+            WHEN markets.yes_bid IS NOT NULL 
+             AND markets.yes_ask IS NOT NULL
+             AND markets.yes_bid > 0
+             AND markets.yes_ask > 0
+            THEN (markets.yes_bid + markets.yes_ask) / 200.0
+            ELSE NULL
+        END AS predicted_prob,
         
         CASE
             WHEN markets.result = 'yes' THEN 1
